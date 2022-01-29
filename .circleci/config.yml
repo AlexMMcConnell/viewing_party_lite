@@ -12,15 +12,21 @@ orbs:
 jobs:
   build:
     docker:
-      - image: cimg/ruby:3.1.0
+      - image: cimg/ruby:2.7.2
     executor: ruby/default
     steps:
       - checkout
-      - run:
-          name: Which bundler?
-          command: bundle -v
       - ruby/bundle-install
 
+  test:
+    steps:
+      - checkout
+      - ruby/install-deps
+      - run:
+          name: Database setup
+          command: bundle exec rails db:create db:schema:load db:seed --trace
+      - ruby/rspec-test
+      
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
