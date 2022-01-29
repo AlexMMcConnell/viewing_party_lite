@@ -18,6 +18,7 @@ jobs:
     executor: ruby/default
     steps:
       - checkout
+      - ruby/install-deps
       - run:
           name: Install Ruby Gems
           command: bundle install
@@ -25,13 +26,19 @@ jobs:
   test:
     docker:
       - image: cimg/ruby:2.7.2
-    executor: ruby/default
+    environment:
+      BUNDLE_JOBS: "3"
+      BUNDLE_RETRY: "3"
+      PGHOST: 127.0.0.1
+      PGUSER: circleci-demo-ruby
+      PGPASSWORD: ""
+      RAILS_ENV: test
     steps:
       - checkout
       - ruby/install-deps
       - run:
           name: Database setup
-          command: bundle exec rails db:create db:migrate db:seed --trace
+          command: bundle exec rails db:create db:schema:load db:seed --trace
       - ruby/rspec-test
 
 # Invoke jobs via workflows
@@ -41,4 +48,6 @@ workflows:
     # Inside the workflow, you define the jobs you want to run.
     jobs:
       - build
-      - test
+      - test:
+          requires:
+            - build
