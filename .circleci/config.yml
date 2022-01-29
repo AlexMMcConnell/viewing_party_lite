@@ -19,6 +19,9 @@ jobs:
       - ruby/bundle-install
 
   test:
+    docker:
+      - image: cimg/ruby:2.7.2
+    executor: ruby/default
     steps:
       - checkout
       - ruby/install-deps
@@ -26,7 +29,7 @@ jobs:
           name: Database setup
           command: bundle exec rails db:create db:schema:load db:seed --trace
       - ruby/rspec-test
-      
+
 # Invoke jobs via workflows
 # See: https://circleci.com/docs/2.0/configuration-reference/#workflows
 workflows:
