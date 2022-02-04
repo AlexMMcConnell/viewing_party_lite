@@ -5,7 +5,7 @@ This is the base repo for the [Viewing Party Lite project](https://backend.turin
 
 ### About this Project
 
-Viewing Part Lite is an application in which users can explore movie options and create a viewing party event for themselves and other users of the application.
+Viewing Party Lite is an application in which users can explore movie options and create a viewing party event for themselves and other users of the application.
 
 ## Setup for the use of the project
 
